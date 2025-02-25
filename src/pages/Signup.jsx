@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { sendOTP } from '../api/auth';
@@ -7,7 +7,8 @@ import { FaUser, FaEnvelope, FaLock, FaUserGraduate, FaBriefcase, FaSpinner, FaS
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [userType, setUserType] = useState('mentee');
+  const location = useLocation();
+  const [userType, setUserType] = useState(location.state?.userType || 'mentee');
   const [loading, setLoading] = useState(false);
   const [otpSending, setOtpSending] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -35,6 +36,13 @@ const Signup = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   };
+
+  // Optional: Add useEffect to handle userType changes from navigation
+  useEffect(() => {
+    if (location.state?.userType) {
+      setUserType(location.state.userType);
+    }
+  }, [location.state]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -88,7 +96,7 @@ const Signup = () => {
       
       if (data.success) {
         toast.success('Signup successful!');
-        navigate('/login');
+        navigate('/');
       } else {
         toast.error(data.message || 'Signup failed');
       }
@@ -377,6 +385,24 @@ const Signup = () => {
                     <span>Sign Up</span>
                   )}
                 </motion.button>
+
+                {/* Add Login Link */}
+                <motion.div
+                  variants={itemVariants}
+                  className="text-center mt-6"
+                >
+                  <p className="text-sm text-gray-600">
+                    Already have an account?{' '}
+                    <Link
+                      to="/login"
+                      state={{ userType: userType }}
+                      className="font-medium text-[#4540E1] hover:text-[#3632B0] 
+                        transition-colors duration-300"
+                    >
+                      Sign in
+                    </Link>
+                  </p>
+                </motion.div>
               </motion.form>
             </AnimatePresence>
           </motion.div>

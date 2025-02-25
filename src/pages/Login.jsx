@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 // import { loginMentee, loginMentor } from '../api/auth';
@@ -9,13 +9,21 @@ import { FaUser, FaEnvelope, FaLock, FaSpinner } from 'react-icons/fa';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
-  const [userType, setUserType] = useState('mentee');
+  const [userType, setUserType] = useState(location.state?.userType || 'mentee');
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  // Add useEffect to handle userType changes from navigation
+  useEffect(() => {
+    if (location.state?.userType) {
+      setUserType(location.state.userType);
+    }
+  }, [location.state]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -216,6 +224,7 @@ const Login = () => {
                     Don't have an account?{' '}
                     <Link
                       to="/signup"
+                      state={{ userType: userType }}
                       className="font-medium text-[#4540E1] hover:text-[#3632B0] 
                         transition-colors duration-300"
                     >
