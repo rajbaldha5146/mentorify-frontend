@@ -54,9 +54,9 @@ const MenteeDashboard = () => {
           }
         })
       );
-      console.log(reviews);
+      // console.log(reviews);
       setSessionReviews(reviews);
-      console.log(sessionReviews);
+      // console.log(sessionReviews);
     } catch (error) {
       console.error('Error fetching sessions:', error);
       toast.error('Failed to fetch sessions');
@@ -131,8 +131,8 @@ const MenteeDashboard = () => {
 
   if (loading) return <div>Loading...</div>;
 
-  console.log('Session Reviews:', sessionReviews);
-  console.log('Completed Sessions:', completedSessions);
+  // console.log('Session Reviews:', sessionReviews);
+  // console.log('Completed Sessions:', completedSessions);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">

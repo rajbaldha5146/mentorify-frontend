@@ -151,7 +151,7 @@ const MentorAvailability = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('Submitting formData:', formData); // Debug log
+      // console.log('Submitting formData:', formData); // Debug log
       let response;
       
       if (availability) {
