@@ -133,8 +133,35 @@ const MentorView = () => {
   };
 
   const SessionCard = ({ session, type, onAccept, onCancel, onComplete }) => {
+    const [meetingLink, setMeetingLink] = useState('');
+    const [isSubmittingLink, setIsSubmittingLink] = useState(false);
     const isAccepting = actionLoading.accepting.has(session.sessionId);
     const isCancelling = actionLoading.cancelling.has(session.sessionId);
+
+    const handleMeetingLinkSubmit = async () => {
+      if (!meetingLink.startsWith('https://meet.google.com/')) {
+        toast.error('Please enter a valid Google Meet link');
+        return;
+      }
+
+      try {
+        setIsSubmittingLink(true);
+        const response = await axios.post(`${BASE_URL}/mentor/add-meeting-link`, {
+          sessionId: session.sessionId,
+          meetingLink: meetingLink
+        });
+
+        if (response.data.success) {
+          toast.success('Meeting link sent to mentee successfully');
+          setMeetingLink(''); // Clear the input
+        }
+      } catch (error) {
+        console.error('Error sending meeting link:', error);
+        toast.error(error.response?.data?.message || 'Failed to send meeting link');
+      } finally {
+        setIsSubmittingLink(false);
+      }
+    };
 
     return (
       <motion.div
@@ -255,16 +282,52 @@ const MentorView = () => {
               )}
 
               {type === 'upcoming' && (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => onComplete(session.sessionId)}
-                  className="flex items-center space-x-2 px-4 py-2 bg-[#4540E1] 
-                    text-white rounded-lg hover:bg-[#3632B0] transition-all duration-300"
-                >
-                  <FaCalendarCheck />
-                  <span>Mark Complete</span>
-                </motion.button>
+                <div className="flex flex-col space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="text"
+                      value={meetingLink}
+                      onChange={(e) => setMeetingLink(e.target.value)}
+                      placeholder="Enter Google Meet link"
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg 
+                        focus:outline-none focus:ring-2 focus:ring-[#4540E1] 
+                        focus:border-transparent"
+                      disabled={isSubmittingLink}
+                    />
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleMeetingLinkSubmit}
+                      disabled={isSubmittingLink || !meetingLink}
+                      className="flex items-center space-x-2 px-4 py-2 bg-[#4540E1] 
+                        text-white rounded-lg hover:bg-[#3632B0] disabled:bg-[#4540E1]/50 
+                        disabled:cursor-not-allowed transition-all duration-300"
+                    >
+                      {isSubmittingLink ? (
+                        <>
+                          <FaSpinner className="animate-spin" />
+                          <span>Sending...</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaEnvelope />
+                          <span>Send Link</span>
+                        </>
+                      )}
+                    </motion.button>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => onComplete(session.sessionId)}
+                    className="flex items-center justify-center space-x-2 px-4 py-2 
+                      bg-[#4540E1] text-white rounded-lg hover:bg-[#3632B0] 
+                      transition-all duration-300"
+                  >
+                    <FaCalendarCheck />
+                    <span>Mark Complete</span>
+                  </motion.button>
+                </div>
               )}
             </div>
           </div>

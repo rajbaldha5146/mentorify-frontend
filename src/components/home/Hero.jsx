@@ -71,7 +71,7 @@ const Hero = () => {
             </Link>
 
             <Link 
-              to="/mentor-signup"
+              to="/signup"
               className="group relative border-2 border-[#4540E1] text-[#4540E1] 
                 px-12 py-4 rounded-2xl inline-block text-lg font-semibold 
                 transition-all duration-300 hover:text-white hover:shadow-xl 

@@ -1,9 +1,15 @@
 // src/components/mentee/SessionCard.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaCalendarAlt, FaClock, FaUser, FaBriefcase, FaEnvelope, FaCheckCircle, FaTimesCircle, FaHourglassHalf } from 'react-icons/fa';
+import { FaCalendarAlt, FaClock, FaUser, FaBriefcase, FaEnvelope, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaVideo, FaSpinner, FaLock } from 'react-icons/fa';
+import axios from '../../api/axios';
+import { toast } from 'react-toastify';
+
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 const SessionCard = ({ session, type }) => {
+  const [isLoadingLink, setIsLoadingLink] = useState(false);
+
   const getStatusConfig = () => {
     switch (type) {
       case 'upcoming':
@@ -42,6 +48,22 @@ const SessionCard = ({ session, type }) => {
   };
 
   const statusConfig = getStatusConfig();
+
+  const fetchAndOpenMeetingLink = async () => {
+    try {
+      setIsLoadingLink(true);
+      const response = await axios.get(`${BASE_URL}/mentee/meeting-link/${session.sessionId}`);
+      
+      if (response.data.success && response.data.data.meetingLink) {
+        window.open(response.data.data.meetingLink, '_blank');
+      }
+    } catch (error) {
+      console.error('Error fetching meeting link:', error);
+      toast.error(error.response?.data?.message || 'Meeting link not available yet');
+    } finally {
+      setIsLoadingLink(false);
+    }
+  };
 
   return (
     <motion.div
@@ -150,6 +172,40 @@ const SessionCard = ({ session, type }) => {
               </motion.div>
             )}
           </motion.div>
+
+          {/* Meeting Link Button - Only show for confirmed sessions */}
+          {type === 'upcoming' && session.status === 'confirmed' && (
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={fetchAndOpenMeetingLink}
+              disabled={isLoadingLink}
+              className={`mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl
+                text-white font-medium transition-all duration-300 ${
+                  isLoadingLink ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#4540E1] hover:bg-[#3632B0]'
+                }`}
+            >
+              {isLoadingLink ? (
+                <>
+                  <FaSpinner className="animate-spin" />
+                  <span>Loading...</span>
+                </>
+              ) : (
+                <>
+                  <FaVideo className="text-lg" />
+                  <span>Join Meeting</span>
+                </>
+              )}
+            </motion.button>
+          )}
+
+          {/* Message if session is confirmed but not yet ready for joining */}
+          {type === 'upcoming' && session.status === 'pending' && (
+            <div className="mt-4 flex items-center justify-center space-x-2 text-gray-500">
+              <FaLock className="text-sm" />
+              <span className="text-sm">Meeting link will be available once confirmed</span>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>

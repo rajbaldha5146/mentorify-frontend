@@ -14,11 +14,17 @@ import BookSession from "./pages/BookSession";
 import MenteeDashboard from "./pages/MenteeDashboard";
 import MentorAvailability from "./pages/mentor/MentorAvailability";
 import MentorProfile from "./pages/mentor/MentorProfile";
+import AboutUs from "./pages/AboutUs";
+import MenteeNavbar from "./components/common/MenteeNavbar";
+import MentorNavbar from "./components/common/MentorNavbar";
+import Navbar from "./components/common/Navbar";
+import Footer from "./components/common/Footer";
 // import Dashboard from "./pages/Dashboard";
 // import Profile from "./pages/Profile";
 
+
 function App() {
-  return (
+  return (    
     <Router>
       <AuthProvider>
         <Routes>
@@ -95,6 +101,16 @@ function App() {
               <ProtectedRoute allowedRoles={["mentor"]}>
                 <MentorProfile />
               </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/about-us"
+            element={
+              <div>
+                <Navbar />
+                <AboutUs />
+              </div>
             }
           />
         </Routes>

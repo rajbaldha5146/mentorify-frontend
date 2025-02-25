@@ -55,7 +55,7 @@ const Navbar = () => {
             >
               About Us
             </Link>
-            <Link 
+            {/* <Link 
               to="/contact-us" 
               className="nav-link relative text-gray-600 hover:text-[#4540E1] transition-all duration-300
                 before:content-[''] before:absolute before:bottom-[-4px] before:left-0 before:w-0 
@@ -63,7 +63,7 @@ const Navbar = () => {
                 hover:before:w-full font-medium"
             >
               Contact us
-            </Link>
+            </Link> */}
             <Link 
               to="/login" 
               className="text-[#4540E1] font-medium hover:text-[#3632B0] transition-all duration-300"
@@ -116,13 +116,13 @@ const Navbar = () => {
                 >
                   About Us
                 </Link>
-                <Link 
+                {/* <Link 
                   to="/contact-us" 
                   className="block px-3 py-2 rounded-lg text-gray-600 font-medium
                     hover:text-[#4540E1] hover:bg-gray-50 transition-all duration-300"
                 >
                   Contact us
-                </Link>
+                </Link> */}
                 <Link 
                   to="/login" 
                   className="block px-3 py-2 rounded-lg text-[#4540E1] font-medium

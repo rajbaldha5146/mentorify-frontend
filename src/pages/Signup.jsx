@@ -286,6 +286,7 @@ const Signup = () => {
                           name="experience"
                           required
                           onChange={handleInputChange}
+                          placeholder="Years of experience or College name with year"
                           className="appearance-none block w-full px-4 py-3 rounded-xl 
                             border border-gray-300 shadow-sm placeholder-gray-400
                             focus:outline-none focus:ring-2 focus:ring-[#4540E1]/20 
@@ -307,6 +308,7 @@ const Signup = () => {
                           name="currentPosition"
                           required
                           onChange={handleInputChange}
+                          placeholder="Your skills (e.g., Full Stack || React || Node.js)"
                           className="appearance-none block w-full px-4 py-3 rounded-xl 
                             border border-gray-300 shadow-sm placeholder-gray-400
                             focus:outline-none focus:ring-2 focus:ring-[#4540E1]/20 

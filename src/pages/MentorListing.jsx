@@ -11,6 +11,8 @@ const MentorListing = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedExpertise, setSelectedExpertise] = useState('all');
+  const [selectedExperience, setSelectedExperience] = useState('all');
+  const [selectedPosition, setSelectedPosition] = useState('all');
 
   useEffect(() => {
     const fetchMentors = async () => {
@@ -28,14 +30,21 @@ const MentorListing = () => {
     fetchMentors();
   }, []);
 
+  const uniqueExpertise = [...new Set(mentors.flatMap(mentor => mentor.expertise))];
+  const uniqueExperience = [...new Set(mentors.map(mentor => mentor.experience))];
+  const uniquePositions = [...new Set(mentors.map(mentor => mentor.currentPosition))];
+
   const filteredMentors = mentors.filter(mentor => {
     const matchesSearch = mentor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         mentor.expertise.some(exp => exp.toLowerCase().includes(searchTerm.toLowerCase()));
+                         mentor.expertise.some(exp => exp.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                         String(mentor.experience).toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         mentor.currentPosition.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesExpertise = selectedExpertise === 'all' || mentor.expertise.includes(selectedExpertise);
-    return matchesSearch && matchesExpertise;
+    const matchesExperience = selectedExperience === 'all' || mentor.experience === selectedExperience;
+    const matchesPosition = selectedPosition === 'all' || mentor.currentPosition === selectedPosition;
+    
+    return matchesSearch && matchesExpertise && matchesExperience && matchesPosition;
   });
-
-  const uniqueExpertise = ['all', ...new Set(mentors.flatMap(mentor => mentor.expertise))];
 
   // Animation variants
   const containerVariants = {
@@ -104,9 +113,9 @@ const MentorListing = () => {
           variants={itemVariants}
           className="bg-white rounded-2xl shadow-xl p-6 mb-8 backdrop-blur-xl bg-opacity-80"
         >
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col gap-4">
             {/* Search Input */}
-            <motion.div 
+            {/* <motion.div 
               className="flex-1 relative"
               whileHover={{ scale: 1.02 }}
             >
@@ -120,30 +129,73 @@ const MentorListing = () => {
                   focus:ring-2 focus:ring-[#4540E1]/20 focus:border-[#4540E1] 
                   transition-all duration-300"
               />
-            </motion.div>
+            </motion.div> */}
 
-            {/* Expertise Filter */}
-            <motion.div 
-              className="md:w-64"
-              whileHover={{ scale: 1.02 }}
-            >
-              <div className="relative">
-                <FaFilter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <select
-                  value={selectedExpertise}
-                  onChange={(e) => setSelectedExpertise(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 
-                    focus:ring-2 focus:ring-[#4540E1]/20 focus:border-[#4540E1] 
-                    transition-all duration-300 appearance-none"
-                >
-                  {uniqueExpertise.map(expertise => (
-                    <option key={expertise} value={expertise}>
-                      {expertise === 'all' ? 'All Expertise' : expertise}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </motion.div>
+            {/* Filters Row */}
+            <div className="flex justify-between w-full">
+              {/* Expertise Filter */}
+              {/* <motion.div whileHover={{ scale: 1.02 }}>
+                <div className="relative">
+                  <FaFilter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <select
+                    value={selectedExpertise}
+                    onChange={(e) => setSelectedExpertise(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 
+                      focus:ring-2 focus:ring-[#4540E1]/20 focus:border-[#4540E1] 
+                      transition-all duration-300 appearance-none"
+                  >
+                    <option value="all">Select Expertise</option>
+                    {uniqueExpertise.map(expertise => (
+                      <option key={expertise} value={expertise}>
+                        {expertise}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </motion.div> */}
+
+              {/* Experience Filter */}
+              <motion.div whileHover={{ scale: 1.02 }}>
+                <div className="relative">
+                  <FaFilter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <select
+                    value={selectedExperience}
+                    onChange={(e) => setSelectedExperience(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 
+                      focus:ring-2 focus:ring-[#4540E1]/20 focus:border-[#4540E1] 
+                      transition-all duration-300 appearance-none"
+                  >
+                    <option value="all">Select Experience</option>
+                    {uniqueExperience.map(experience => (
+                      <option key={experience} value={experience}>
+                        {`${experience} Years`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </motion.div>
+
+              {/* Position Filter */}
+              <motion.div whileHover={{ scale: 1.02 }}>
+                <div className="relative">
+                  <FaFilter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <select
+                    value={selectedPosition}
+                    onChange={(e) => setSelectedPosition(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 
+                      focus:ring-2 focus:ring-[#4540E1]/20 focus:border-[#4540E1] 
+                      transition-all duration-300 appearance-none"
+                  >
+                    <option value="all">Select Position</option>
+                    {uniquePositions.map(position => (
+                      <option key={position} value={position}>
+                        {position}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </motion.div>
 

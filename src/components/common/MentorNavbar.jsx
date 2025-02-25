@@ -72,7 +72,7 @@ const MentorNavbar = () => {
               Set Availability
             </Link>
 
-            <Link 
+            {/* <Link 
               to="/about-us" 
               className="nav-link relative text-gray-600 hover:text-[#4540E1] transition-all duration-300
                 before:content-[''] before:absolute before:bottom-[-4px] before:left-0 before:w-0 
@@ -80,9 +80,9 @@ const MentorNavbar = () => {
                 hover:before:w-full font-medium"
             >
               About Us
-            </Link>
+            </Link> */}
 
-            <Link 
+            {/* <Link 
               to="/contact-us" 
               className="nav-link relative text-gray-600 hover:text-[#4540E1] transition-all duration-300
                 before:content-[''] before:absolute before:bottom-[-4px] before:left-0 before:w-0 
@@ -90,7 +90,7 @@ const MentorNavbar = () => {
                 hover:before:w-full font-medium"
             >
               Contact us
-            </Link>
+            </Link> */}
 
             <Link 
               to="/mentor/profile"
@@ -136,20 +136,20 @@ const MentorNavbar = () => {
             >
               Set Availability
             </Link>
-            <Link 
+            {/* <Link 
               to="/about-us" 
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 
                 hover:text-[#4540E1] hover:bg-gray-50 transition-all duration-300"
             >
               About Us
-            </Link>
-            <Link 
+            </Link> */}
+            {/* <Link 
               to="/contact-us" 
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 
                 hover:text-[#4540E1] hover:bg-gray-50 transition-all duration-300"
             >
               Contact us
-            </Link>
+            </Link> */}
             <Link 
               to="/mentor/profile" 
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 
