@@ -54,7 +54,7 @@ const Signup = () => {
       if (response.success) {
         setOtpSent(true);
         toast.success('OTP sent successfully');
-        console.log(response);
+        // console.log(response);
       } 
       else if (response.message === 'User already registered') {
         setOtpSent(false);
