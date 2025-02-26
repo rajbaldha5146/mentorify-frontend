@@ -6,19 +6,19 @@ const Stats = () => {
   const stats = [
     { 
       number: 150, 
-      label: "Total Courses",
-      icon: "📚",
+      label: "Total Sessions",
+      icon: "📅",
       suffix: "+"
     },
     { 
       number: 250, 
-      label: "Total Instructors",
+      label: "Total Mentors",
       icon: "👨‍🏫",
       suffix: ""
     },
     { 
       number: 35, 
-      label: "Total Students",
+      label: "Total Mentees",
       icon: "👨‍🎓",
       suffix: "K+"
     },
@@ -30,10 +30,10 @@ const Stats = () => {
       <div className="absolute inset-0 overflow-hidden">
         <motion.div 
           className="absolute w-72 h-72 bg-white/10 rounded-full -top-20 -left-20"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1] 
-          }}
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.2, 0.1] 
+            }}
           transition={{ 
             duration: 8,
             repeat: Infinity,
@@ -74,14 +74,9 @@ const Stats = () => {
             >
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 
                 transform transition-all duration-300 group-hover:bg-white/20">
-                <motion.span 
-                  className="text-4xl mb-4 block"
-                  initial={{ scale: 1 }}
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
+                <span className="text-4xl mb-4 block">
                   {stat.icon}
-                </motion.span>
+                </span>
                 <div className="flex items-baseline space-x-1">
                   <h2 className="text-5xl font-bold text-white mb-3">
                     <CountUp 

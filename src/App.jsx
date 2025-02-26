@@ -1,6 +1,5 @@
-// src/App.js
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
@@ -15,18 +14,35 @@ import MenteeDashboard from "./pages/MenteeDashboard";
 import MentorAvailability from "./pages/mentor/MentorAvailability";
 import MentorProfile from "./pages/mentor/MentorProfile";
 import AboutUs from "./pages/AboutUs";
-import MenteeNavbar from "./components/common/MenteeNavbar";
-import MentorNavbar from "./components/common/MentorNavbar";
 import Navbar from "./components/common/Navbar";
-import Footer from "./components/common/Footer";
-// import Dashboard from "./pages/Dashboard";
-// import Profile from "./pages/Profile";
 
+const RoleBasedRedirect = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const { role } = JSON.parse(userData);
+      if (role === "mentor") {
+        navigate("/mentor/MentorView");
+      } else if (role === "mentee") {
+        navigate("/mentee/MenteeView");
+      } else {
+        navigate("/");
+      }
+    } else {
+      navigate("/");
+    }
+  }, []);
+
+  return null;
+};
 
 function App() {
-  return (    
+  return (
     <Router>
       <AuthProvider>
+        <RoleBasedRedirect />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />

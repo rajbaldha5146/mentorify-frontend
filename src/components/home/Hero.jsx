@@ -1,11 +1,18 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
-import mentor from "../../assets/mentor-image.png"
+import mentor from "../../assets/mentor-image.png";
 
 const Hero = () => {
   const navigate = useNavigate();
+
+  // Get role from local storage
+  const user = JSON.parse(localStorage.getItem("user")); 
+  const role = user?.role || null;
+  
+  console.log(role); // mentee ya mentor aana chahiye
+  
 
   const handleSignup = (type) => {
     navigate('/signup', { state: { userType: type } });
@@ -14,6 +21,7 @@ const Hero = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-[#F8F8FF] overflow-hidden pt-16 sm:pt-20">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-24">
+        
         {/* Left Section */}
         <motion.div 
           initial={{ opacity: 0, x: -50 }}
@@ -57,37 +65,40 @@ const Hero = () => {
             accelerate your career growth with one-on-one mentorship sessions.
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-wrap gap-4"
-          >
-            <button 
-              onClick={() => handleSignup('mentee')}
-              className="group relative bg-[#FFB800] text-black px-12 py-4 rounded-2xl 
-                inline-block text-lg font-semibold transition-all duration-300
-                hover:bg-[#E6A600] hover:shadow-xl hover:shadow-[#FFB800]/20 
-                active:scale-95 overflow-hidden"
+          {/* Show buttons only if role is not 'mentee' or 'mentor' */}
+          {!(role === "mentee" || role === "mentor") && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="flex flex-wrap gap-4"
             >
-              <span className="relative z-10">JOIN AS A MENTEE</span>
-              <div className="absolute inset-0 h-full w-0 bg-gradient-to-r 
-                from-[#FFB800] via-[#FFD700] to-[#FFB800] transition-all 
-                duration-300 group-hover:w-full -z-0"></div>
-            </button>
+              <button 
+                onClick={() => handleSignup('mentee')}
+                className="group relative bg-[#FFB800] text-black px-12 py-4 rounded-2xl 
+                  inline-block text-lg font-semibold transition-all duration-300
+                  hover:bg-[#E6A600] hover:shadow-xl hover:shadow-[#FFB800]/20 
+                  active:scale-95 overflow-hidden"
+              >
+                <span className="relative z-10">JOIN AS A MENTEE</span>
+                <div className="absolute inset-0 h-full w-0 bg-gradient-to-r 
+                  from-[#FFB800] via-[#FFD700] to-[#FFB800] transition-all 
+                  duration-300 group-hover:w-full -z-0"></div>
+              </button>
 
-            <button 
-              onClick={() => handleSignup('mentor')}
-              className="group relative border-2 border-[#4540E1] text-[#4540E1] 
-                px-12 py-4 rounded-2xl inline-block text-lg font-semibold 
-                transition-all duration-300 hover:text-white hover:shadow-xl 
-                hover:shadow-[#4540E1]/20 active:scale-95 overflow-hidden"
-            >
-              <span className="relative z-10">BECOME A MENTOR</span>
-              <div className="absolute inset-0 h-full w-0 bg-[#4540E1] 
-                transition-all duration-300 group-hover:w-full -z-0"></div>
-            </button>
-          </motion.div>
+              <button 
+                onClick={() => handleSignup('mentor')}
+                className="group relative border-2 border-[#4540E1] text-[#4540E1] 
+                  px-12 py-4 rounded-2xl inline-block text-lg font-semibold 
+                  transition-all duration-300 hover:text-white hover:shadow-xl 
+                  hover:shadow-[#4540E1]/20 active:scale-95 overflow-hidden"
+              >
+                <span className="relative z-10">BECOME A MENTOR</span>
+                <div className="absolute inset-0 h-full w-0 bg-[#4540E1] 
+                  transition-all duration-300 group-hover:w-full -z-0"></div>
+              </button>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* Right Section - Image */}
@@ -142,4 +153,4 @@ const Hero = () => {
   );
 };
 
-export default Hero; 
+export default Hero;
